@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Calendar Meeting</title>
+    <meta name="description" content="Calendar Meetings"/>
+
+    <link href="css/app.css" rel="stylesheet">
+
+    <script src="angular/angular.min.js"></script>
+
+  </head>
+  <body ng-app="myApp" ng-controller="CalendarController" class="ng-cloak">
+    <h1 class="heading center">
+      Today's Meetings
+    </h1>
+
+    <div ng-hide="loading" class="upload">
+      <button type="text">Choose file</button>
+      <input class="uploadButton" type="file" id="selectCalendar"  />
+      <span  ng-if="fileMessage" class="error-text">{{fileMessage}}</span>
+      <button class="import" ng-click="importAgenda()" >Import Agenda</button>
+    </div>
+
+    <div ng-show="loading" style="position:absolute;top:30%;left:40%">
+      <span align="center" style="color:white">
+        <h8 style="margin-left:-150px" ng-if="content">{{content}}</h8>
+        <h4 ng-if="!content">Loading...</h4>
+      </span>
+      <div><img class="loader" src="img/circle.gif"></div>
+    </div>
+    
+    <div ng-hide="loading" class="meeting-container" style="width:{{maxWidth+'px'}};max-height:{{calendarHeight + 50 +'px'}}" >
+      <div class="timeticks">
+        <div class="ticks" ng-if="time.value <= calendarHeight" style="top:{{time.value+'px'}}"  ng-repeat="time in timeticks">
+          <span class="line" style="width:{{maxWidth - 6 + 'px'}}"><hr></span>
+          <span class="time">{{(9 + time.hours | number:0)}}:{{time.minutes}} {{(9 + time.hours | timeFormat)}}</span>
+        </div>
+      </div>
+      <div class="calendar">
+        <div ng-repeat="meeting in data">
+          <div ng-mouseover="show=true" ng-mouseout="show=false" ng-if="meeting.isValid" id={{meeting.meeting_id}} class="meeting-box" style="width:{{columnWidth + 'px'}};left:{{(meeting.position*columnWidth)+100+'px'}};top:{{meeting.top}};height:{{meeting.height}}">  
+            <p class="meeting-text center" style="margin-top:{{meeting.text_height}}">
+              <span class="center" style="width:100px">
+                <span ng-if="columnWidth>100">Meeting </span>{{meeting.id}}
+              </span>
+              <div ng-show="show" class="meeting-details center" style="margin-top:{{meeting.height}}">
+                <span class="meeting-details-text" style="left:{{(columnWidth-200)/2+'px'}}">
+                  <span ng-if="columnWidth<100">Meeting : {{meeting.id}}</span>
+                  <br>
+                  Starts at {{(meeting.startHours + 9) | number:0}}:{{meeting.startMinutes}} {{meeting.startHours + 9 | timeFormat}}
+                  <br>
+                  Ends at {{meeting.endHours + 9 | number:0}}:{{meeting.endMinutes}} {{meeting.endHours + 9 | timeFormat}}
+                </span>
+              </div>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div ng-hide="loading" class="meeting-text-container" style="top:{{calendarHeight + 170 + 'px'}}">
+      <ul ng-repeat="meeting in data">
+        <li ng-if="!meeting.isValid" class="meeting-message">Meeting {{meeting.id}} : {{meeting.message}}</li>
+      </ul>
+    </div>
+    
+
+    <!-- Model -->        
+    <script src="model.js"></script>
+
+    <!-- Controllers -->
+    <script src="controller.js"></script>
+
+    <!-- Services -->
+    <script src="services/loadJSON.js"></script>
+
+    <!-- Filters -->
+    <script src="filters/timeFormat.js"></script>    
+
+  </body>
+</html>

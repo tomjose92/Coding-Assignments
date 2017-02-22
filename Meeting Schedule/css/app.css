@@ -1,0 +1,163 @@
+* {
+  font-family: Georgia;
+  color:white;
+}
+body {
+  background-color: black;
+}
+.center {
+  text-align: center;
+}
+.line{
+  position: absolute;
+  padding-top: 15px;
+}
+
+.line hr{
+  border-color:#E4F1FE;
+  border-top:dashed 2px;
+  border-bottom: 0px;
+}
+
+.ticks {
+  position: absolute;
+  left:5px;
+} 
+
+.time{
+  display: inline-block;
+  color:#ECF0F1;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.time-ticks {
+  position: absolute;
+  top:100px;
+  max-height:500px;
+}
+.meeting-container {
+  background-color: #34495E;
+  position: absolute;
+  top:120px;
+  left:10px;
+  border:5px solid #4183D7  ;
+  height: 1500px;
+}
+.meeting-box {
+  position: absolute;
+  border: 1px solid #ECF0F1;
+  background-color: #34495E;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 5px 5px #2C3E50;
+}
+
+.meeting-text-container {
+  position: absolute;
+}
+
+.meeting-text-container ul > li 
+{
+  color:#E74C3C;
+}
+
+.meeting-text {
+  font-size:15px;
+  font-weight: bold;
+}
+
+.meeting-message {
+  font-size:20px;
+}
+
+.meeting-details{
+  font-size: 12px;
+  z-index:1000;
+  border: 1px white;
+  position: absolute;
+  top:2px;
+}
+
+.meeting-details span{
+  font-size: 20px;
+  font-family: fantasy;
+}
+
+.meeting-details-text {
+  position: absolute;
+  background-color: #3498DB;
+  width:200px;
+  height:100px;
+  border-radius: 50px;
+}
+
+.meeting-details-text {
+  text-align: center;
+}
+
+.heading {
+  color:#BDC3C7;
+}
+
+.meeting-container::-webkit-scrollbar {
+    width: 1em;
+}
+
+.calendar{
+  position: absolute;
+  top:8px;
+  z-index: 100;
+}
+
+.upload {
+  margin:20px 0px;
+}
+
+button {
+  cursor: pointer;
+  color:white;
+  background-color: #1ABC9C;
+  border: 0px #27AE60;
+  position: absolute;
+  font-size: 15px;
+  padding:5px 15px;
+}
+
+button:hover,button:focus {
+  background-color: #2ECC71;
+}
+
+.uploadButton {
+  opacity: 0;
+  height: 25px;
+  width: 100px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.import {
+  margin-left:150px;
+}
+
+.error-text {
+  color:#E74C3C;
+  margin:5px 25%;
+  position: absolute;
+}
+
+.loader {
+  background-color: black;
+}
+ 
+.meeting-container
+::-webkit-scrollbar-track {
+      background-color: #ECECEC;
+}
+::-webkit-scrollbar-thumb {
+      background-color: #ECECEC; 
+} /* this will style the thumb, ignoring the track */
+::-webkit-scrollbar-button {
+      background-color: #BDC3C7;
+} /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+  
