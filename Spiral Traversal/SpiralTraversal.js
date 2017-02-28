@@ -67,4 +67,24 @@ function spiralTraversal (numCols,numRows,colStart,rowStart,direction)
     spiralTraversal (numCols,numRows,colStart,rowStart,direction);
 }
 
-spiralTraversal(6,4);
+function initSpiralTraversal(){
+    var rows = document.getElementById("rows").value.trim();
+    var columns =  document.getElementById("columns").value.trim();
+    if(!isNaN(rows) && !isNaN(columns) && rows.length>0 && columns.length>0)
+    {
+        rows = parseInt(rows);
+        columns = parseInt(columns);
+        if(rows <=0 || columns <=0)
+        {
+            alert("Row or Column should not have a value less than 1")
+        }
+        else
+        {
+            spiralTraversal(parseInt(rows),parseInt(columns));
+        }
+    }
+    else
+    {
+        alert("Please enter a number for the row and column fields");
+    }
+}
