@@ -1,0 +1,44 @@
+{
+  "name": "react-js-browser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "webpack -d --watch",
+    "build": "webpack -p",
+    "serve": "http-server ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-syntax-decorators": "^6.13.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "bluebird": "^3.4.5",
+    "lodash": "^4.15.0",
+    "radium": "^0.18.0",
+    "react": "^15.5.0",
+    "react-dom": "^15.4.2",
+    "react-draggable": "^3.0.3",
+    "react-modal": "^1.4.0",
+    "react-native-cli": "^2.0.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.4.0",
+    "react-table": "^6.8.0",
+    "react-text-marquee": "^1.0.1",
+    "recursive-lowercase-json": "^0.2.0",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.0.1",
+    "reselect": "^2.5.4",
+    "throttle-debounce": "^1.0.1",
+    "ua-parser-js": "^0.7.17",
+    "webpack": "^1.14.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "react-hot-loader": "^1.3.1"
+  }
+}
