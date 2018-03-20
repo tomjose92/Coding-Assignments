@@ -47,7 +47,7 @@
   \*****************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/tomjose/Desktop/Coding/mario-react/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/tomjose/Desktop/Coding/mario-react/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/tomjose/Desktop/Coding/Coding-Assignments.git/trunk/mario-react/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/tomjose/Desktop/Coding/Coding-Assignments.git/trunk/mario-react/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 	
 	'use strict';
 	
@@ -83,7 +83,7 @@
 	//import configureStore from './js/store/store';
 	//var  harddiskBrowserStore = configureStore();
 	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/tomjose/Desktop/Coding/mario-react/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "index.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/tomjose/Desktop/Coding/Coding-Assignments.git/trunk/mario-react/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "index.jsx" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }),
 /* 1 */
@@ -28293,7 +28293,7 @@
   \*****************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/tomjose/Desktop/Coding/mario-react/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/tomjose/Desktop/Coding/mario-react/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
+	/* REACT HOT LOADER */ if (false) { (function () { var ReactHotAPI = require("/Users/tomjose/Desktop/Coding/Coding-Assignments.git/trunk/mario-react/node_modules/react-hot-api/modules/index.js"), RootInstanceProvider = require("/Users/tomjose/Desktop/Coding/Coding-Assignments.git/trunk/mario-react/node_modules/react-hot-loader/RootInstanceProvider.js"), ReactMount = require("react-dom/lib/ReactMount"), React = require("react"); module.makeHot = module.hot.data ? module.hot.data.makeHot : ReactHotAPI(function () { return RootInstanceProvider.getRootInstances(ReactMount); }, React); })(); } try { (function () {
 	
 	'use strict';
 	
@@ -28330,8 +28330,7 @@
 	    var _this = _possibleConstructorReturn(this, (Grid.__proto__ || Object.getPrototypeOf(Grid)).call(this));
 	
 	    _this.state = {
-	      m: 10,
-	      n: 10
+	      steps: 0
 	    };
 	    return _this;
 	  }
@@ -28345,31 +28344,42 @@
 	          yMario = _state.yMario,
 	          m = _state.m,
 	          n = _state.n,
-	          foodNo = _state.foodNo;
+	          foodNo = _state.foodNo,
+	          steps = _state.steps,
+	          isDone = _state.isDone;
 	
-	      if (direction) {
-	        if (direction == "up") {
+	      switch (direction) {
+	        case 'up':
+	          xMario - 1 >= 0 && ++steps;
 	          xMario = xMario - 1 >= 0 ? xMario - 1 : 0;
-	        } else if (direction == "down") {
-	          xMario = xMario + 1 < m - 1 ? xMario + 1 : m - 1;
-	        } else if (direction == "left") {
+	          break;
+	        case 'down':
+	          xMario + 1 <= m - 1 && ++steps;
+	          xMario = xMario + 1 <= m - 1 ? xMario + 1 : m - 1;
+	          break;
+	        case 'left':
+	          yMario - 1 >= 0 && ++steps;
 	          yMario = yMario - 1 >= 0 ? yMario - 1 : 0;
-	        } else if (direction == "right") {
-	          yMario = yMario + 1 < n - 1 ? yMario + 1 : n - 1;
-	        }
-	        //console.log('xMario', xMario, 'yMario', yMario);
-	        this.foodCheck(xMario, yMario, true);
-	        if (xMario != null && yMario != null) {
-	          this.setState({
-	            xMario: xMario,
-	            yMario: yMario
-	          });
-	        }
+	          break;
+	        case 'right':
+	          yMario + 1 <= n - 1 && ++steps;
+	          yMario = yMario + 1 <= n - 1 ? yMario + 1 : n - 1;
+	          break;
+	      }
+	      //console.log('xMario', xMario, 'yMario', yMario);
+	
+	      this.foodCheck(xMario, yMario, true);
+	      if (xMario != null && yMario != null) {
+	        this.setState({
+	          xMario: xMario,
+	          yMario: yMario,
+	          steps: steps
+	        });
 	      }
 	      var self = this;
 	      setTimeout(function () {
-	        (!foodNo || foodNo.length > 0) && self.updateMario();
-	      }, 500);
+	        !isDone && self.updateMario();
+	      }, 100);
 	    }
 	  }, {
 	    key: 'handleKeyPress',
@@ -28387,42 +28397,65 @@
 	        } else if (evt.key == "ArrowRight" || evt.keyCode == 39) {
 	          direction = 'right';
 	        }
-	        console.log('direction', direction);
 	        direction && self.setState({
 	          direction: direction
 	        });
 	      };
 	    }
 	  }, {
+	    key: 'randomize',
+	    value: function randomize(val) {
+	      return Math.floor(Math.random() * val);
+	    }
+	  }, {
+	    key: 'reset',
+	    value: function reset() {
+	      this.setState({
+	        foodNo: null,
+	        steps: 0,
+	        isDone: false,
+	        m: null,
+	        n: null,
+	        xMario: null,
+	        yMario: null,
+	        direction: null
+	      });
+	    }
+	  }, {
 	    key: 'initalize',
 	    value: function initalize() {
-	      console.log('initalize');
-	      var _state2 = this.state,
-	          m = _state2.m,
-	          n = _state2.n;
-	
-	      var xMario = Math.floor(Math.random() * m);
-	      var yMario = Math.floor(Math.random() * n);
-	      var foodNo = new Array((m + n) / 2).fill(0);
+	      this.reset();
+	      var m = document.getElementById('mRows') && document.getElementById('mRows').value,
+	          n = document.getElementById('nColumns') && document.getElementById('nColumns').value;
+	      if (isNaN(m) || isNaN(n)) {
+	        alert('Please enter numbers in the input fields');
+	        return;
+	      }
+	      m = parseInt(m), n = parseInt(n);
+	      var xMario = this.randomize(m);
+	      var yMario = this.randomize(n);
+	      var foodNo = new Array(Math.ceil((m + n) / 2)).fill(0);
+	      var self = this;
 	      foodNo = foodNo.map(function () {
-	        return { x: Math.floor(Math.random() * m), y: Math.floor(Math.random() * n) };
+	        var x = void 0,
+	            y = void 0;
+	        do {
+	          x = self.randomize(m);
+	          y = self.randomize(n);
+	        } while (x == xMario && y == yMario);
+	        return { x: x, y: y };
 	      });
+	      console.log('initialize', foodNo);
 	      this.setState({
+	        m: m,
+	        n: n,
 	        xMario: xMario,
 	        yMario: yMario,
 	        foodNo: foodNo
 	      });
 	      this.updateMario();
-	    }
-	  }, {
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      this.initalize();
 	      this.handleKeyPress();
 	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {}
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
@@ -28454,7 +28487,8 @@
 	      }
 	      if (isMario) {
 	        this.setState({
-	          foodNo: newFoodNo
+	          foodNo: newFoodNo,
+	          isDone: newFoodNo.length == 0
 	        });
 	      }
 	      //console.log('foodNo', foodNo, check, xVal, yVal);
@@ -28465,26 +28499,34 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      var _state3 = this.state,
-	          m = _state3.m,
-	          n = _state3.n,
-	          xMario = _state3.xMario,
-	          yMario = _state3.yMario,
-	          foodNo = _state3.foodNo;
+	      var _state2 = this.state,
+	          m = _state2.m,
+	          n = _state2.n,
+	          xMario = _state2.xMario,
+	          yMario = _state2.yMario,
+	          foodNo = _state2.foodNo,
+	          isDone = _state2.isDone,
+	          steps = _state2.steps;
 	
+	      console.log('foodNo', foodNo);
 	      var self = this;
-	      if (!foodNo || foodNo.length == 0) {
-	        foodNo && foodNo.length == 0 && this.setState({
-	          foodNo: null
-	        });
+	      if (isDone) {
+	        document.onkeydown = null;
 	        return _react2.default.createElement(
 	          'div',
 	          null,
 	          'Congrats',
 	          _react2.default.createElement(
+	            'div',
+	            { style: { paddingBottom: '10px' } },
+	            'Total Steps taken : ',
+	            steps,
+	            ' '
+	          ),
+	          _react2.default.createElement(
 	            'button',
-	            { onClick: function onClick() {
-	                return _this2.initalize();
+	            { style: styles.button, onClick: function onClick() {
+	                return _this2.reset();
 	              } },
 	            'Try Again'
 	          )
@@ -28511,9 +28553,28 @@
 	        'div',
 	        { style: styles.container },
 	        _react2.default.createElement(
+	          'div',
+	          { style: styles.input },
+	          'Enter number of rows ',
+	          _react2.default.createElement('input', { id: 'mRows', type: 'text' })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: styles.input },
+	          'Enter number of columns ',
+	          _react2.default.createElement('input', { id: 'nColumns', type: 'text' })
+	        ),
+	        (!m || !n) && _react2.default.createElement(
+	          'button',
+	          { style: styles.button, onClick: function onClick() {
+	              return _this2.initalize();
+	            } },
+	          'Initialize'
+	        ),
+	        _react2.default.createElement(
 	          'table',
-	          { style: { border: '1px solid black' } },
-	          tableHTML
+	          { style: { marginTop: '50px', border: '1px solid black' } },
+	          m && n && tableHTML
 	        )
 	      );
 	    }
@@ -28526,16 +28587,22 @@
 	}(_react2.default.Component);
 	
 	var styles = {
-	  container: {
-	    width: '100%',
-	    textAlign: 'center'
+	  button: {
+	    padding: '5px 5px',
+	    borderColor: 'lightgreen',
+	    backgroundColor: 'lightgreen'
 	  },
+	  input: {
+	    paddingTop: '5px',
+	    paddingBottom: '10px'
+	  },
+	  container: {},
 	  border: {
 	    border: '1px solid black',
-	    height: 24,
-	    width: 24,
-	    maxHeight: 24,
-	    maxWidth: 24
+	    height: 28,
+	    width: 28,
+	    maxHeight: 28,
+	    maxWidth: 28
 	  }
 	};
 	
@@ -28543,7 +28610,7 @@
 	
 	exports.default = Grid;
 	
-	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/tomjose/Desktop/Coding/mario-react/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Grid.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
+	/* REACT HOT LOADER */ }).call(this); } finally { if (false) { (function () { var foundReactClasses = module.hot.data && module.hot.data.foundReactClasses || false; if (module.exports && module.makeHot) { var makeExportsHot = require("/Users/tomjose/Desktop/Coding/Coding-Assignments.git/trunk/mario-react/node_modules/react-hot-loader/makeExportsHot.js"); if (makeExportsHot(module, require("react"))) { foundReactClasses = true; } var shouldAcceptModule = true && foundReactClasses; if (shouldAcceptModule) { module.hot.accept(function (err) { if (err) { console.error("Cannot apply hot update to " + "Grid.js" + ": " + err.message); } }); } } module.hot.dispose(function (data) { data.makeHot = module.makeHot; data.foundReactClasses = foundReactClasses; }); })(); } }
 
 /***/ }),
 /* 248 */

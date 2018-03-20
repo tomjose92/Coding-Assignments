@@ -6,41 +6,46 @@ class Grid extends React.Component {
   constructor(){
     super();
     this.state = {
-      m: 10,
-      n: 10
+      steps:0
     };
   }
 
   updateMario(){
-    let {direction, xMario, yMario, m, n, foodNo} = this.state;
-    if(direction)
+    let {direction, xMario, yMario, m, n, foodNo, steps, isDone} = this.state;
+    switch(direction)
     {
-      if (direction == "up"){
-          xMario = (xMario-1)>=0? (xMario-1) : 0;
-      }
-      else if(direction == "down"){
-        xMario = (xMario+1)<m-1? (xMario+1) : m-1;
-      }
-      else if(direction== "left"){
+      case 'up': 
+        (xMario-1)>=0 && ++steps;
+        xMario = (xMario-1)>=0? (xMario-1) : 0;
+      break;
+      case 'down':
+        (xMario+1)<=m-1 && ++steps; 
+        xMario = (xMario+1)<=m-1? (xMario+1) : m-1;
+      break;
+      case 'left':
+        (yMario-1)>=0 && ++steps;
         yMario = (yMario-1)>=0? (yMario-1) : 0;
-      }
-      else if(direction == "right"){
-        yMario = (yMario+1)<n-1? (yMario+1) : n-1;
-      }
-      //console.log('xMario', xMario, 'yMario', yMario);
-      this.foodCheck(xMario, yMario, true);
-      if(xMario!=null && yMario!=null)
-      {
-        this.setState({
-          xMario,
-          yMario
-        }); 
-      }
+      break;
+      case 'right':
+        (yMario+1)<=n-1 && ++steps;
+        yMario = (yMario+1)<=n-1? (yMario+1) : n-1;
+      break;
+    }
+    //console.log('xMario', xMario, 'yMario', yMario);
+      
+    this.foodCheck(xMario, yMario, true);
+    if(xMario!=null && yMario!=null)
+    {
+      this.setState({
+        xMario,
+        yMario,
+        steps
+      }); 
     }
     let self=this;
     setTimeout(function(){
-      (!foodNo || foodNo.length>0) && self.updateMario();
-    },500); 
+      !isDone && self.updateMario();
+    },100); 
   }
 
   handleKeyPress(){
@@ -60,42 +65,68 @@ class Grid extends React.Component {
       else if(evt.key == "ArrowRight" || evt.keyCode == 39){
         direction = 'right'
       }
-      console.log('direction', direction);
       direction && self.setState({
         direction
       });
     };
   }
 
-  initalize(){
-    console.log('initalize');
-    let {m, n} = this.state;
-    let xMario = Math.floor(Math.random()*m);
-    let yMario = Math.floor(Math.random()*n);
-    let foodNo = new Array((m+n)/2).fill(0);
-    foodNo = foodNo.map(function(){
-      return {x:Math.floor(Math.random()*m), y:Math.floor(Math.random()*n)};
-    });
+  randomize(val){
+    return Math.floor(Math.random()*val)
+  }
+
+  reset(){
     this.setState({
+      foodNo:null,
+      steps:0,
+      isDone:false,
+      m:null,
+      n:null,
+      xMario:null,
+      yMario:null,
+      direction:null
+    });
+  }
+
+  initalize(){
+    this.reset();
+    let m = document.getElementById('mRows') && document.getElementById('mRows').value,
+    n = document.getElementById('nColumns') && document.getElementById('nColumns').value;
+    if(isNaN(m) || isNaN(n))
+    {
+      alert('Please enter numbers in the input fields');
+      return;
+    }
+    m = parseInt(m),
+    n = parseInt(n);
+    let xMario = this.randomize(m);
+    let yMario = this.randomize(n);
+    let foodNo = new Array(Math.ceil((m+n)/2)).fill(0);
+    let self = this;
+    foodNo = foodNo.map(function(){
+      let x,y; 
+      do{
+        x=self.randomize(m);
+        y=self.randomize(n)
+      }
+      while(x==xMario && y==yMario);
+      return {x, y};
+    });
+    console.log('initialize',foodNo);
+    this.setState({
+      m,
+      n,
       xMario,
       yMario,
       foodNo
     });
     this.updateMario();
-  }
-
-  componentWillMount(){
-    this.initalize();
     this.handleKeyPress();
-  }
-
-  componentDidUpdate(){
-
   }
 
   componentWillUnmount(){
     document.onkeydown = null;
-  }  
+  }
 
   foodCheck(xVal, yVal, isMario){
     let {foodNo} = this.state;
@@ -120,7 +151,8 @@ class Grid extends React.Component {
     }
     if(isMario){
       this.setState({
-        foodNo: newFoodNo
+        foodNo: newFoodNo,
+        isDone: newFoodNo.length==0
       });
     }
     //console.log('foodNo', foodNo, check, xVal, yVal);
@@ -128,17 +160,17 @@ class Grid extends React.Component {
   }
 
   render(){
-    let {m, n, xMario, yMario, foodNo} = this.state;
+    let {m, n, xMario, yMario, foodNo, isDone, steps} = this.state;
+    console.log('foodNo', foodNo);
     let self = this;
-    if(!foodNo || foodNo.length==0)
+    if(isDone)
     {
-      foodNo && foodNo.length==0 && this.setState({
-        foodNo: null
-      });
+      document.onkeydown = null;
       return (
         <div>
           Congrats
-          <button onClick={()=>this.initalize()}>Try Again</button>
+          <div style={{paddingBottom:'10px'}}>Total Steps taken : {steps} </div>
+          <button style={styles.button} onClick={()=>this.reset()}>Try Again</button>
         </div>
       )
     }
@@ -157,8 +189,11 @@ class Grid extends React.Component {
     });
     return (
       <div style={styles.container}>
-        <table style={{border: '1px solid black'}}>
-          {tableHTML}
+        <div style={styles.input}>Enter number of rows <input id='mRows' type='text'/></div>
+        <div style={styles.input}>Enter number of columns <input id='nColumns' type='text'/></div>
+        {(!m || !n) &&<button style={styles.button} onClick={()=>this.initalize()}>Initialize</button>}
+        <table style={{marginTop:'50px',border: '1px solid black'}}>
+          {m && n && tableHTML}
         </table>
       </div>
     );
@@ -171,16 +206,24 @@ class Grid extends React.Component {
 }
 
 const styles = {
+  button:{
+    padding: '5px 5px',
+    borderColor: 'lightgreen',
+    backgroundColor: 'lightgreen'
+  },
+  input:{
+    paddingTop:'5px',
+    paddingBottom:'10px'
+  },
   container:{
-    width:'100%',
-    textAlign:'center'
+    
   },
   border:{
     border: '1px solid black',
-    height:24,
-    width:24,
-    maxHeight:24,
-    maxWidth:24
+    height:28,
+    width:28,
+    maxHeight:28,
+    maxWidth:28
   }
 }
 
