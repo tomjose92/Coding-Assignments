@@ -1,6 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import includes from 'lodash/includes';
+import Finish from './Finish';
 
 class Grid extends React.Component {
   constructor(){
@@ -11,7 +10,7 @@ class Grid extends React.Component {
   }
 
   updateMario(){
-    let {direction, xMario, yMario, m, n, foodNo, steps, isDone} = this.state;
+    let {direction, xMario, yMario, m, n, foodNo, steps, isDone, time} = this.state;
     switch(direction)
     {
       case 'up': 
@@ -34,18 +33,22 @@ class Grid extends React.Component {
     //console.log('xMario', xMario, 'yMario', yMario);
       
     this.foodCheck(xMario, yMario, true);
-    if(xMario!=null && yMario!=null)
+    if(!isDone)
     {
-      this.setState({
-        xMario,
-        yMario,
-        steps
-      }); 
+      if(xMario!=null && yMario!=null)
+      {
+        this.setState({
+          xMario,
+          yMario,
+          steps,
+          time: 0 || time+100
+        }); 
+      }
+      let self=this;
+      setTimeout(function(){
+        self.updateMario();
+      },100);  
     }
-    let self=this;
-    setTimeout(function(){
-      !isDone && self.updateMario();
-    },100); 
   }
 
   handleKeyPress(){
@@ -84,7 +87,9 @@ class Grid extends React.Component {
       n:null,
       xMario:null,
       yMario:null,
-      direction:null
+      direction:null,
+      time: 0,
+      isReady: false
     });
   }
 
@@ -92,7 +97,7 @@ class Grid extends React.Component {
     this.reset();
     let m = document.getElementById('mRows') && document.getElementById('mRows').value,
     n = document.getElementById('nColumns') && document.getElementById('nColumns').value;
-    if(isNaN(m) || isNaN(n))
+    if(m.trim()=='' || n.trim()=='' ||isNaN(m) || isNaN(n))
     {
       alert('Please enter numbers in the input fields');
       return;
@@ -112,13 +117,13 @@ class Grid extends React.Component {
       while(x==xMario && y==yMario);
       return {x, y};
     });
-    console.log('initialize',foodNo);
     this.setState({
       m,
       n,
       xMario,
       yMario,
-      foodNo
+      foodNo,
+      isReady: true
     });
     this.updateMario();
     this.handleKeyPress();
@@ -160,19 +165,12 @@ class Grid extends React.Component {
   }
 
   render(){
-    let {m, n, xMario, yMario, foodNo, isDone, steps} = this.state;
-    console.log('foodNo', foodNo);
+    let {m, n, xMario, yMario, foodNo, isDone, steps, time, isReady} = this.state;
     let self = this;
     if(isDone)
     {
       document.onkeydown = null;
-      return (
-        <div>
-          Congrats
-          <div style={{paddingBottom:'10px'}}>Total Steps taken : {steps} </div>
-          <button style={styles.button} onClick={()=>this.reset()}>Try Again</button>
-        </div>
-      )
+      return <Finish steps={steps} time={time} reset={()=>this.reset()}/>
     }
     let arrayM = new Array(m).fill(0);
     let arrayN = new Array(n).fill(0);
@@ -180,7 +178,7 @@ class Grid extends React.Component {
       let columns = arrayN.map(function(val, nIndex){
         return (
           <td key={nIndex} style={styles.border}>
-          {(mIndex==xMario && nIndex==yMario) && <img src='app/images/mario.jpg'/>}
+          {(mIndex==xMario && nIndex==yMario) && <img className='mario' src='app/images/mario.jpg'/>}
           {self.foodCheck(mIndex, nIndex) && <img src='app/images/mushroom.png'/>}
           </td>
         );
@@ -189,23 +187,32 @@ class Grid extends React.Component {
     });
     return (
       <div style={styles.container}>
-        <div style={styles.input}>Enter number of rows <input id='mRows' type='text'/></div>
-        <div style={styles.input}>Enter number of columns <input id='nColumns' type='text'/></div>
-        {(!m || !n) &&<button style={styles.button} onClick={()=>this.initalize()}>Initialize</button>}
+        <div style={styles.input}>
+          <span style={styles.field}>Enter number of rows</span> 
+          <input disabled={isReady} id='mRows' type='number'/>
+        </div>
+        <div style={styles.input}>
+          <span style={styles.field}>Enter number of columns</span> 
+          <input disabled={isReady} id='nColumns' type='number'/>
+        </div>
+        {(!isReady) &&<button style={styles.button} onClick={()=>this.initalize()}>Initialize</button>}
+        {isReady && (
+        <div>
+          <span style={styles.field}>Steps : {steps}</span>
+          <span>Time : {time/1000}  seconds</span>
+        </div>)}
         <table style={{marginTop:'50px',border: '1px solid black'}}>
-          {m && n && tableHTML}
+          {isReady && tableHTML}
         </table>
       </div>
     );
   }
-
-  componentDidUpdate(prevProps, prevState)
-  {
-        
-  }
 }
 
 const styles = {
+  field:{
+    paddingRight: '10px'
+  },
   button:{
     padding: '5px 5px',
     borderColor: 'lightgreen',
@@ -213,7 +220,11 @@ const styles = {
   },
   input:{
     paddingTop:'5px',
-    paddingBottom:'10px'
+    paddingBottom:'10px',
+    ':disabled':{
+      backgroundColor: 'darkgrey',
+      borderColor:'darkgrey'
+    }
   },
   container:{
     
@@ -226,10 +237,5 @@ const styles = {
     maxWidth:28
   }
 }
-
-
-const mapStateToProps = (state) =>{
-  
-};
 
 export default Grid;    
